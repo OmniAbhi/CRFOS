@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}CRFOS | Edit resource{% endblock %}
+{% block page_title %}Edit resource{% endblock %}
+{% block content %}
+<div class="page-actions">
+	<a class="text-link" href="{{ url_for('stage3.resource_details', resource_id=resource.id) }}">← Back to resource</a>
+</div>
+<form method="post" class="panel resource-form">
+	<div class="form-grid">
+		<label>Resource name <input name="name" value="{{ form_data.get('name', resource.name) }}" required></label>
+		<label>Resource type <input name="resource_type" value="{{ form_data.get('resource_type', resource.resource_type) }}" required></label>
+		<label>Location <input name="location" value="{{ form_data.get('location', resource.location or '') }}" required></label>
+		<label>Capacity <input name="capacity" type="number" min="0" value="{{ form_data.get('capacity', resource.capacity if resource.capacity is not none else '') }}"></label>
+		<label>Department
+			<select name="department_id" required>
+				<option value="">Select department</option>
+				{% for department in departments %}
+				<option value="{{ department.id }}" {% if department.id|string == form_data.get('department_id', resource.department_id|string if resource.department_id is not none else '') %}selected{% endif %}>{{ department.name }}</option>
+				{% endfor %}
+			</select>
+		</label>
+		<label>Status
+			<select name="status">
+				{% for status in statuses|sort %}<option value="{{ status }}" {% if status == form_data.get('status', resource.status) %}selected{% endif %}>{{ status }}</option>{% endfor %}
+			</select>
+		</label>
+	</div>
+	<label>Description <textarea name="description" rows="5">{{ form_data.get('description', resource.description or '') }}</textarea></label>
+	<div class="form-actions"><button class="primary-button" type="submit">Save changes</button><a class="secondary-button" href="{{ url_for('stage3.resource_details', resource_id=resource.id) }}">Cancel</a></div>
+</form>
+{% endblock %}

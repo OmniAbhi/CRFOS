@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}CRFOS | Record actual usage{% endblock %}
+{% block page_title %}Record actual usage{% endblock %}
+{% block content %}
+<div class="page-actions"><a class="text-link" href="{{ url_for('stage3.blackbox_overview') }}">← Back to Black Box</a></div>
+<form method="post" class="panel resource-form usage-form">
+	<div class="form-grid">
+		<label>Booking <select name="booking_id" required><option value="">Select a booking</option>{% for booking in bookings %}<option value="{{ booking.id }}" {% if form_data.get('booking_id', '') == booking.id|string %}selected{% endif %}>#{{ booking.id }} · {{ booking.resource_name }} · {{ booking.start_time.strftime('%Y-%m-%d %H:%M') }} to {{ booking.end_time.strftime('%H:%M') }}</option>{% endfor %}</select></label>
+		<label>Actual occupancy <input name="actual_occupancy" type="number" min="0" value="{{ form_data.get('actual_occupancy', '') }}" placeholder="Optional"></label>
+		<label>Actual start <input name="actual_start_time" type="datetime-local" value="{{ form_data.get('actual_start_time', '') }}" required></label>
+		<label>Actual end <input name="actual_end_time" type="datetime-local" value="{{ form_data.get('actual_end_time', '') }}" required></label>
+	</div>
+	<label>Notes <textarea name="notes" rows="5">{{ form_data.get('notes', '') }}</textarea></label>
+	<div class="form-actions"><button class="primary-button" type="submit">Save actual usage</button><a class="secondary-button" href="{{ url_for('stage3.blackbox_overview') }}">Cancel</a></div>
+</form>
+{% if not bookings %}<div class="panel empty-state">No eligible bookings are waiting for an actual usage record.</div>{% endif %}
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}CRFOS | Request sharing{% endblock %}
+{% block page_title %}Request resource sharing{% endblock %}
+{% block content %}
+<div class="page-actions"><a class="text-link" href="{{ url_for('stage3.sharing_dashboard') }}">← Back to sharing</a></div>
+<form method="post" class="panel resource-form sharing-form">
+	<div class="form-grid">
+		<label>Requesting department <select name="requesting_department_id" required><option value="">Select department</option>{% for department in departments %}<option value="{{ department.id }}" {% if form_data.get('requesting_department_id', '') == department.id|string %}selected{% endif %}>{{ department.name }}</option>{% endfor %}</select></label>
+		<label>Requester <select name="requesting_user_id"><option value="">No requester selected</option>{% for user in users %}<option value="{{ user.id }}" {% if form_data.get('requesting_user_id', '') == user.id|string %}selected{% endif %}>{{ user.full_name }}</option>{% endfor %}</select></label>
+		<label>Resource requested <select name="requested_resource_id" required><option value="">Select an available resource</option>{% for candidate in candidates %}<option value="{{ candidate.id }}" {% if form_data.get('requested_resource_id', '') == candidate.id|string %}selected{% endif %}>{{ candidate.name }} · {{ candidate.resource_type }} · {{ candidate.department_name or 'Unassigned' }}</option>{% endfor %}</select></label>
+		<label>Quantity <input name="requested_quantity" type="number" min="1" value="{{ form_data.get('requested_quantity', '1') }}" required></label>
+	</div>
+	<label>Purpose or reason <textarea name="reason" rows="5" required>{{ form_data.get('reason', '') }}</textarea></label>
+	<div class="sharing-schema-note">The current sharing_requests schema stores the request and quantity, but does not store a requested start/end period. Approval therefore validates the request state and current resource status only.</div>
+	<div class="form-actions"><button class="primary-button" type="submit">Submit pending request</button><a class="secondary-button" href="{{ url_for('stage3.sharing_dashboard') }}">Cancel</a></div>
+</form>
+{% if not candidates %}<div class="panel empty-state">No available resources can currently be requested for sharing.</div>{% endif %}
+{% endblock %}

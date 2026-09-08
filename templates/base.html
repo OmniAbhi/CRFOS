@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{% block title %}CRFOS{% endblock %}</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+	<div class="app-shell">
+		<aside class="sidebar">
+			<a class="brand" href="{{ url_for('home') }}">
+				<span class="brand-mark">C</span>
+				<span>
+					<strong>CRFOS</strong>
+					<small>Resource intelligence</small>
+				</span>
+			</a>
+
+			<nav class="navigation" aria-label="Main navigation">
+				<span class="nav-label">Overview</span>
+				<a class="nav-item active" href="{{ url_for('home') }}"><span>▦</span>Dashboard</a>
+
+				<span class="nav-label">Resources</span>
+				<a class="nav-item" href="{{ url_for('stage3.resources') }}"><span>▣</span>Resource registry</a>
+				<a class="nav-item" href="{{ url_for('stage3.bookings') }}"><span>◷</span>Bookings</a>
+				<a class="nav-item" href="#usage"><span>◉</span>Usage records</a>
+
+				<span class="nav-label">Analysis</span>
+				<a class="nav-item" href="{{ url_for('stage3.blackbox_overview') }}"><span>◒</span>Resource Black Box</a>
+				<a class="nav-item" href="{{ url_for('stage3.cost_dashboard') }}"><span>₹</span>Cost optimization</a>
+				<a class="nav-item" href="{{ url_for('stage3.prediction_dashboard') }}"><span>↗</span>Demand prediction</a>
+
+				<span class="nav-label">Operations</span>
+				<a class="nav-item" href="{{ url_for('stage3.sharing_dashboard') }}"><span>⇄</span>Resource sharing</a>
+				<a class="nav-item" href="{{ url_for('stage3.maintenance_dashboard') }}"><span>⚒</span>Predictive maintenance</a>
+			</nav>
+
+			<div class="system-status">
+				<span class="status-dot"></span>
+				<div><strong>System online</strong><small>Foundation stage</small></div>
+			</div>
+		</aside>
+
+		<main class="main-content">
+			<header class="topbar">
+				<div>
+					<p class="eyebrow">CRFOS <span>/</span> Dashboard</p>
+					<h1>{% block page_title %}Campus overview{% endblock %}</h1>
+				</div>
+				<div class="user-chip"><span class="avatar">A</span><span><strong>Administrator</strong><small>System admin</small></span></div>
+			</header>
+			<section class="content">
+				{% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="flash-stack">{% for category, message in messages %}<div class="flash-message {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}{% endwith %}
+				{% block content %}{% endblock %}
+			</section>
+		</main>
+	</div>
+	<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>

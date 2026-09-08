@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}CRFOS | Purchase #{{ purchase.id }}{% endblock %}
+{% block page_title %}Purchase #{{ purchase.id }}{% endblock %}
+{% block content %}
+<div class="page-actions"><a class="text-link" href="{{ url_for('stage3.cost_purchases') }}">← Back to purchases</a></div>
+<section class="detail-grid"><div class="panel detail-panel"><div class="panel-heading"><div><span class="eyebrow">Purchase information</span><h3>{{ purchase.item_name }}</h3></div><span class="resource-status status-{{ purchase.status|lower }}">{{ purchase.status }}</span></div><dl class="detail-list"><dt>Purchase ID</dt><dd>#{{ purchase.id }}</dd><dt>Item / resource</dt><dd>{{ purchase.item_name }}</dd><dt>Linked resource</dt><dd>{{ purchase.resource_name or 'Not linked' }}</dd><dt>Resource type</dt><dd>{{ purchase.resource_type or 'Not specified' }}</dd><dt>Supplier</dt><dd>{{ purchase.supplier_name or 'Not specified' }}</dd><dt>Department</dt><dd>{{ purchase.department_name or 'Unassigned' }}</dd><dt>Quantity</dt><dd>{{ purchase.quantity }}</dd><dt>Unit cost</dt><dd>₹{{ '%.2f'|format(purchase.unit_cost) }}</dd><dt>Total cost</dt><dd>₹{{ '%.2f'|format(purchase.total_cost) }}</dd><dt>Purchase date</dt><dd>{{ purchase.purchase_date }}</dd></dl></div><div class="panel future-panel"><span class="eyebrow">Procurement context</span><h3>Recorded decision evidence</h3><p>{{ purchase.purpose or 'No purpose recorded.' }}</p><p>{{ purchase.procurement_notes or 'No procurement notes recorded.' }}</p></div></section>
+{% endblock %}
